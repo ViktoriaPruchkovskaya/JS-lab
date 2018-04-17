@@ -1,9 +1,58 @@
+
 const getForecast = require('./forecast/forecast');
 const express = require('express');
+const Promise = require('es6-promise').Promise;
 
 const app = express();
 
 const PORT = 3000;
+
+let person = {
+    name: "Sasha",
+    age: 25
+}
+
+let str = JSON.stringify(person, undefined, 2);
+console.log(str);
+
+
+console.log('Promise start');
+
+let data = 1;
+let firstPromise = new Promise((resolve, reject) => {
+    if(data){
+        resolve('resolve');
+    }
+    else{
+        reject('reject');
+    }
+});
+
+firstPromise
+.then(data => {
+    return 'promise ' + data;
+}, data => {
+    return 'promise ' + data;
+}).then(data => {
+    console.log(data);
+}, data => {
+    console.log(data);
+});
+
+
+console.log('Promise with reject');
+
+let rejectPromise = new Promise((resolve, reject) => {
+    setTimeout(() => reject (new Error ('Failed promise')), 100);
+    setTimeout(() => resolve('Ignored'), 200);
+});
+
+rejectPromise
+.then(
+    result => console.log(result), 
+    error => console.log(error) 
+  ); 
+
 
 getForecast().then( response => {
     console.log(response.data);
